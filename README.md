@@ -2,6 +2,7 @@
 
 A local web-based configuration wizard designed to help initialize newly flashed Armbian device. It guides the user through setting up admin and user accounts, configuring locales and timezones, and optionally connecting to a Wi-Fi network.
 
+Uses Armbian Autoconfig - https://docs.armbian.com/User-Guide_Autoconfig/
 
 ### Step 1: Administrator Setup
 Set the root password for your device.
@@ -22,3 +23,8 @@ Select your preferred region and timezone.
 Connect your Armbian device to a local Wi-Fi network.
 
 ![Step 4: Network Checkout](screenshots/step4.png)
+
+### Step 5: Advanced (Optional)
+Configure custom SSH keys, specific user attributes, and set a static IP address or override Ethernet defaults. 
+
+![Step 5: Advanced](screenshots/step5.png)

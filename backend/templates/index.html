@@ -25,6 +25,8 @@
                 <div class="step" data-target="3"><div class="circle">3</div><p>Locale</p></div>
                 <div class="line"></div>
                 <div class="step" data-target="4"><div class="circle">4</div><p>Network</p></div>
+                <div class="line"></div>
+                <div class="step" data-target="5"><div class="circle">5</div><p>Advanced</p></div>
             </div>
 
             <!-- Forms -->
@@ -700,6 +702,66 @@
                         <input type="password" id="wifiPass" placeholder="Leave blank if open">
                     </div>
                     <div class="btn-group">
+                        <button class="btn btn-secondary prev-btn">Back</button>
+                        <button class="btn btn-primary next-btn">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 5: Advanced -->
+                <div class="form-step" id="step5">
+                    <h3>Advanced Settings</h3>
+                    <p>Configure SSH keys and static networking.</p>
+                    
+                    <h4 class="section-title">Security & Accounts</h4>
+                    <div class="input-group">
+                        <label>Root SSH Key (Optional)</label>
+                        <input type="text" id="rootKey" placeholder="ssh-rsa AAAAB3N...">
+                    </div>
+                    <div class="input-group">
+                        <label>User SSH Key (Optional)</label>
+                        <input type="text" id="userKey" placeholder="ssh-rsa AAAAB3N...">
+                    </div>
+                    <div class="input-group">
+                        <label>User Full Name</label>
+                        <input type="text" id="realName" placeholder="e.g. John Doe">
+                    </div>
+                    <div class="input-group">
+                        <label>User Default Shell</label>
+                        <select id="userShell">
+                            <option value="/bin/bash">bash</option>
+                            <option value="/bin/zsh">zsh</option>
+                            <option value="/bin/dash">dash</option>
+                        </select>
+                    </div>
+
+                    <h4 class="section-title">Network Configuration</h4>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="ethEnabled" checked> Enable Ethernet parsing
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="useStaticIp"> Use Static IP
+                    </label>
+
+                    <div id="staticIpGroup" style="display:none; margin-top: 10px; padding-left:15px; border-left: 2px solid #555;">
+                        <div class="input-group">
+                            <label>Static IP Address</label>
+                            <input type="text" id="staticIp" placeholder="192.168.1.100">
+                        </div>
+                        <div class="input-group">
+                            <label>Subnet Mask</label>
+                            <input type="text" id="staticMask" placeholder="255.255.255.0">
+                        </div>
+                        <div class="input-group">
+                            <label>Gateway</label>
+                            <input type="text" id="staticGw" placeholder="192.168.1.1">
+                        </div>
+                        <div class="input-group">
+                            <label>DNS Servers</label>
+                            <input type="text" id="staticDns" placeholder="8.8.8.8 8.8.4.4">
+                        </div>
+                    </div>
+
+                    <div class="btn-group" style="margin-top:20px;">
                         <button class="btn btn-secondary prev-btn">Back</button>
                         <button class="btn btn-success" id="finishBtn">Complete Setup</button>
                     </div>

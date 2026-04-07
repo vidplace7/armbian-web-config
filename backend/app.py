@@ -85,60 +85,75 @@ def scan_wifi():
 def setup():
     data = request.json
     
-    # 1. Update Root Password
-    root_pass = data.get('rootPass')
-    if root_pass:
-        run_cmd(f"echo 'root:{root_pass}' | chpasswd")
+    content = ""
+    # Network Settings
+    content += 'PRESET_NET_CHANGE_DEFAULTS="1"\n'
+    content += f'PRESET_NET_ETHERNET_ENABLED="{data.get("ethEnabled", "1")}"\n'
     
-    # 2. Add User and Password
-    username = data.get('userName')
-    user_pass = data.get('userPass')
-    if username and user_pass:
-        # Check if user exists
-        if run_cmd(f"id -u {username}"):
-            pass # User might exist
-        else:
-            run_cmd(f"useradd -m -s /bin/bash {username}")
-        # Add to groups
-        groups = "sudo,netdev,audio,video,plugdev,users,dialout,bluetooth,docker"
-        run_cmd(f"usermod -aG {groups} {username} 2>/dev/null || true")
-        run_cmd(f"echo '{username}:{user_pass}' | chpasswd")
-        
-    # 3. Timezone and Locale
-    timezone = data.get('timezone')
-    if timezone:
-        run_cmd(f"timedatectl set-timezone {timezone}")
-        run_cmd("dpkg-reconfigure -f noninteractive tzdata")
-    
-    locale = data.get('locale')
-    if locale:
-        run_cmd(f"sed -i 's/# {locale}/{locale}/' /etc/locale.gen")
-        run_cmd(f"locale-gen {locale}")
-        run_cmd(f"update-locale LANG={locale.split(' ')[0]}")
-    
-    # 4. Wifi Setup
     wifi_ssid = data.get('wifiSsid')
-    wifi_pass = data.get('wifiPass')
-    has_wifi = False
     if wifi_ssid:
-        # Create the NetworkManager profile without connecting immediately (which disrupts the AP)
-        run_cmd(f"nmcli con add type wifi ifname '*' con-name '{wifi_ssid}' autoconnect yes ssid '{wifi_ssid}'")
+        content += 'PRESET_NET_WIFI_ENABLED="1"\n'
+        content += f'PRESET_NET_WIFI_SSID="{wifi_ssid}"\n'
+        wifi_pass = data.get('wifiPass')
         if wifi_pass:
-            run_cmd(f"nmcli con modify '{wifi_ssid}' wifi-sec.key-mgmt wpa-psk wifi-sec.psk '{wifi_pass}'")
-        has_wifi = True
+            content += f'PRESET_NET_WIFI_KEY="{wifi_pass}"\n'
+        cc = data.get("wifiCountryCode", "GB")
+        if not cc: cc = "GB"
+        content += f'PRESET_NET_WIFI_COUNTRYCODE="{cc}"\n'
+        content += 'PRESET_CONNECT_WIRELESS="y"\n'
+    else:
+        content += 'PRESET_NET_WIFI_ENABLED="0"\n'
+        
+    if data.get('useStaticIp'):
+        content += 'PRESET_NET_USE_STATIC="1"\n'
+        content += f'PRESET_NET_STATIC_IP="{data.get("staticIp", "")}"\n'
+        content += f'PRESET_NET_STATIC_MASK="{data.get("staticMask", "")}"\n'
+        content += f'PRESET_NET_STATIC_GATEWAY="{data.get("staticGw", "")}"\n'
+        content += f'PRESET_NET_STATIC_DNS="{data.get("staticDns", "")}"\n'
+    else:
+        content += 'PRESET_NET_USE_STATIC="0"\n'
+        
+    # System
+    content += 'SET_LANG_BASED_ON_LOCATION="n"\n'
+    # For armbian autoconfig, the locale should be e.g. en_US.UTF-8, not containing the second UTF-8 like the select has. Let's fix it here
+    locale_val = data.get("locale", "en_US.UTF-8").split()[0]
+    content += f'PRESET_LOCALE="{locale_val}"\n'
+    content += f'PRESET_TIMEZONE="{data.get("timezone", "UTC")}"\n'
     
-    # Cleanup and Signal done
-    if os.path.exists('/root/.not_logged_in_yet'):
-        os.remove('/root/.not_logged_in_yet')
-    os.system("killall armbian-firstlogin || true")
+    # Root
+    content += f'PRESET_ROOT_PASSWORD="{data.get("rootPass", "")}"\n'
+    if data.get('rootKey'):
+        content += f'PRESET_ROOT_KEY="{data.get("rootKey", "")}"\n'
+        
+    # User
+    content += f'PRESET_USER_NAME="{data.get("userName", "")}"\n'
+    content += f'PRESET_USER_PASSWORD="{data.get("userPass", "")}"\n'
+    if data.get('userKey'):
+        content += f'PRESET_USER_KEY="{data.get("userKey", "")}"\n'
+    if data.get('realName'):
+        content += f'PRESET_DEFAULT_REALNAME="{data.get("realName", "")}"\n'
+    content += f'PRESET_USER_SHELL="{data.get("userShell", "/bin/bash")}"\n'
     
-    # Disable service
+    # Write to file
+    try:
+        with open("/root/armbian-firstlogin.conf", "w") as f:
+            f.write(content)
+    except Exception as e:
+        print("Failed to write conf", e)
+        # Try local write for testing context
+        with open("armbian-firstlogin.conf", "w") as f:
+            f.write(content)
+
+    # Disable this web config service
     os.system("systemctl disable armbian-web-config.service &")
     
-    # Schedule reboot
-    os.system("(sleep 3 && nmcli con down $(get_hostname)-armbiansetup || true && reboot) &")
+    # Trigger first login script natively
+    os.system("systemctl restart armbian-firstlogin || /usr/lib/armbian/armbian-firstlogin &")
     
-    return jsonify({"status": "success", "wifi": has_wifi})
+    # Schedule AP shutdown
+    os.system("(sleep 3 && nmcli con down $(get_hostname)-armbiansetup || true) &")
+    
+    return jsonify({"status": "success", "wifi": bool(wifi_ssid)})
 
 if __name__ == '__main__':
     try:

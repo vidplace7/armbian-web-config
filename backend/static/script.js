@@ -93,6 +93,11 @@ document.addEventListener('DOMContentLoaded', () => {
         passGroup.style.display = 'block';
     }
 
+    // Static IP Toggle Logic
+    document.getElementById('useStaticIp').addEventListener('change', (e) => {
+        document.getElementById('staticIpGroup').style.display = e.target.checked ? 'block' : 'none';
+    });
+
     // Submit Logic
     finishBtn.addEventListener('click', async () => {
         document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
@@ -105,7 +110,17 @@ document.addEventListener('DOMContentLoaded', () => {
             timezone: document.getElementById('timezone').value,
             locale: document.getElementById('locale').value,
             wifiSsid: selectedWifi,
-            wifiPass: document.getElementById('wifiPass').value
+            wifiPass: document.getElementById('wifiPass').value,
+            rootKey: document.getElementById('rootKey').value,
+            userKey: document.getElementById('userKey').value,
+            realName: document.getElementById('realName').value,
+            userShell: document.getElementById('userShell').value,
+            ethEnabled: document.getElementById('ethEnabled').checked ? "1" : "0",
+            useStaticIp: document.getElementById('useStaticIp').checked,
+            staticIp: document.getElementById('staticIp').value,
+            staticMask: document.getElementById('staticMask').value,
+            staticGw: document.getElementById('staticGw').value,
+            staticDns: document.getElementById('staticDns').value
         };
 
         try {
