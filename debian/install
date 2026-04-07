@@ -1,0 +1,2 @@
+backend/* /usr/lib/armbian-web-config/
+systemd/armbian-web-config.service /lib/systemd/system/

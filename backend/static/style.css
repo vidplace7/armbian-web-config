@@ -1,0 +1,289 @@
+:root {
+    --bg: #0f172a;
+    --surface: rgba(30, 41, 59, 0.7);
+    --border: rgba(255, 255, 255, 0.1);
+    --primary: #3b82f6;
+    --primary-hover: #2563eb;
+    --success: #10b981;
+    --text: #f8fafc;
+    --subtext: #94a3b8;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.background-mesh {
+    position: absolute;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.2), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.15), transparent 25%);
+    z-index: -1;
+}
+
+.container {
+    width: 100%;
+    max-width: 500px;
+    padding: 2rem;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 2rem;
+    animation: fadeInDown 0.8s ease;
+}
+
+.logo h2 {
+    font-weight: 700;
+    font-size: 2rem;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(to right, #60a5fa, #34d399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.logo p {
+    color: var(--subtext);
+    font-size: 0.95rem;
+}
+
+.wizard {
+    background: var(--surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    animation: fadeInUp 0.8s ease;
+}
+
+.progress-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.step {
+    text-align: center;
+    opacity: 0.4;
+    transition: all 0.3s ease;
+}
+
+.step.active {
+    opacity: 1;
+}
+
+.circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--subtext);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.step.active .circle {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: white;
+}
+
+.step p {
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.line {
+    flex-grow: 1;
+    height: 2px;
+    background: var(--border);
+    margin: 0 10px;
+    margin-top: -1.5rem;
+}
+
+.form-step {
+    display: none;
+    animation: fadeIn 0.4s ease;
+}
+
+.form-step.active {
+    display: block;
+}
+
+.form-step h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.form-step p {
+    color: var(--subtext);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+.input-group {
+    margin-bottom: 1.25rem;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--subtext);
+}
+
+.input-group input, .input-group select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.input-group input:focus, .input-group select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.btn-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex: 1;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover);
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.btn-success {
+    background: var(--success);
+    color: white;
+}
+
+.btn-success:hover {
+    background: #059669;
+}
+
+.network-scanner {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: rgba(15, 23, 42, 0.4);
+    margin-bottom: 1rem;
+}
+
+.network-item {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.network-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.network-item.selected {
+    background: rgba(59, 130, 246, 0.2);
+    border-left: 3px solid var(--primary);
+}
+
+.network-item:last-child {
+    border-bottom: none;
+}
+
+.scanning {
+    padding: 1rem;
+    text-align: center;
+    color: var(--subtext);
+    font-style: italic;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-left-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 2rem auto;
+}
+
+.success-icon {
+    width: 64px;
+    height: 64px;
+    background: var(--success);
+    border-radius: 50%;
+    color: white;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem auto;
+    animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes scaleIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }

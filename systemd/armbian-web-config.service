@@ -1,0 +1,16 @@
+[Unit]
+Description=Armbian Web Configuration Setup
+ConditionPathExists=/root/.not_logged_in_yet
+After=NetworkManager.service
+Wants=NetworkManager.service
+Before=multi-user.target
+Before=armbian-firstlogin.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /usr/lib/armbian-web-config/app.py
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

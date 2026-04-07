@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Armbian Setup</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-mesh"></div>
+    <div class="container">
+        <div class="logo">
+            <h2>Armbian Setup</h2>
+            <p>Welcome to your new device. Let's get started.</p>
+        </div>
+
+        <div class="wizard">
+            <!-- Progress Tracker -->
+            <div class="progress-container">
+                <div class="step active" data-target="1"><div class="circle">1</div><p>Root</p></div>
+                <div class="line"></div>
+                <div class="step" data-target="2"><div class="circle">2</div><p>User</p></div>
+                <div class="line"></div>
+                <div class="step" data-target="3"><div class="circle">3</div><p>Locale</p></div>
+                <div class="line"></div>
+                <div class="step" data-target="4"><div class="circle">4</div><p>Network</p></div>
+            </div>
+
+            <!-- Forms -->
+            <div class="form-container">
+                <!-- Step 1: Root -->
+                <div class="form-step active" id="step1">
+                    <h3>Administrator Setup</h3>
+                    <p>Set the root password for your device.</p>
+                    <div class="input-group">
+                        <label>Root Password</label>
+                        <input type="password" id="rootPass" placeholder="Enter root password" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Confirm Root Password</label>
+                        <input type="password" id="rootPassConf" placeholder="Confirm root password" required>
+                    </div>
+                    <button class="btn btn-primary next-btn">Next</button>
+                </div>
+
+                <!-- Step 2: User -->
+                <div class="form-step" id="step2">
+                    <h3>User Account</h3>
+                    <p>Create your primary user account.</p>
+                    <div class="input-group">
+                        <label>Username</label>
+                        <input type="text" id="userName" placeholder="e.g. pi" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" id="userPass" placeholder="Enter password" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Confirm Password</label>
+                        <input type="password" id="userPassConf" placeholder="Confirm password" required>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary prev-btn">Back</button>
+                        <button class="btn btn-primary next-btn">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Locale -->
+                <div class="form-step" id="step3">
+                    <h3>Locale & Timezone</h3>
+                    <p>Select your region preferences.</p>
+                    <div class="input-group">
+                        <label>Timezone</label>
+                        <select id="timezone">
+                            <option value="America/New_York">America/New_York</option>
+                            <option value="America/Los_Angeles">America/Los_Angeles</option>
+                            <option value="Europe/London">Europe/London</option>
+                            <option value="Europe/Paris">Europe/Paris</option>
+                            <option value="Asia/Tokyo">Asia/Tokyo</option>
+                            <option value="UTC">UTC</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Locale</label>
+                        <select id="locale">
+                            <option value="en_US.UTF-8 UTF-8">en_US.UTF-8</option>
+                            <option value="en_GB.UTF-8 UTF-8">en_GB.UTF-8</option>
+                            <option value="fr_FR.UTF-8 UTF-8">fr_FR.UTF-8</option>
+                            <option value="de_DE.UTF-8 UTF-8">de_DE.UTF-8</option>
+                        </select>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary prev-btn">Back</button>
+                        <button class="btn btn-primary next-btn">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Network -->
+                <div class="form-step" id="step4">
+                    <h3>Wireless Network</h3>
+                    <p>Connect to a Wi-Fi network (optional).</p>
+                    <div class="network-scanner" id="networkList">
+                        <p class="scanning">Scanning for networks...</p>
+                    </div>
+                    <div class="input-group" id="wifiPassGroup" style="display:none;">
+                        <label>Wi-Fi Password for <span id="selectedNetworkDisplay"></span></label>
+                        <input type="password" id="wifiPass" placeholder="Leave blank if open">
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary prev-btn">Back</button>
+                        <button class="btn btn-success" id="finishBtn">Complete Setup</button>
+                    </div>
+                </div>
+
+                <div class="form-step" id="loadingStep">
+                    <h3>Applying Configuration</h3>
+                    <div class="spinner"></div>
+                    <p>Please wait while the system is configured. This might take a minute.</p>
+                </div>
+                
+                <div class="form-step" id="doneStep">
+                    <h3>Setup Complete!</h3>
+                    <div class="success-icon">✓</div>
+                    <p>Your Armbian device is rebooting to apply changes.</p>
+                    <p id="wifiFeedback">Please reconnect your phone/computer to the same Wi-Fi network to access it over the LAN.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html>
