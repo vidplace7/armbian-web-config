@@ -50,6 +50,10 @@ def index():
 
 @app.route('/api/wifi/scan')
 def scan_wifi():
+    import shutil
+    if not shutil.which("nmcli"):
+        return jsonify([{"ssid": "Wifi Network Scanning Unavailable", "security": "none", "signal": 0}])
+        
     devs = run_cmd("nmcli -t -f DEVICE,TYPE dev | grep wifi | cut -d: -f1").split('\n')
     dev = devs[0] if devs and devs[0] else None
     if not dev:
