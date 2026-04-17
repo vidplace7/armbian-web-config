@@ -24,7 +24,10 @@ def get_hostname():
 
 def ensure_ap_mode():
     hostname = get_hostname()
-    ap_ssid = f"{hostname}-armbiansetup"
+    # Encode SSID to bytes. Enforce 32 byte limit by truncating.
+    ap_ssid = f"armbiansetup-{hostname}".encode("utf-8")[:32]
+    # Decode back to string, ignoring any invalid characters that may arise from truncation.
+    ap_ssid = ap_ssid.decode("utf-8", "ignore")
     # Check if AP is already running
     active_ap = run_cmd("nmcli -t -f DEVICE,TYPE,STATE dev | grep wifi | grep connected")
     if active_ap:
