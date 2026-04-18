@@ -139,12 +139,12 @@ def setup():
     
     # Write to file
     try:
-        with open("/root/armbian-firstlogin.conf", "w") as f:
+        with open("/root/.not_logged_in_yet", "w") as f:
             f.write(content)
     except Exception as e:
         print("Failed to write conf", e)
         # Try local write for testing context
-        with open("armbian-firstlogin.conf", "w") as f:
+        with open(".not_logged_in_yet", "w") as f:
             f.write(content)
 
     # Disable this web config service
