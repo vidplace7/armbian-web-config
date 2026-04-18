@@ -154,7 +154,7 @@ def setup():
     os.system("systemctl restart armbian-firstlogin || /usr/lib/armbian/armbian-firstlogin &")
     
     # Schedule AP shutdown
-    os.system("(sleep 3 && nmcli con down armbiansetup-$(get_hostname) || true) &")
+    os.system("(sleep 3 && nmcli con down Hotspot || true) &")
     
     return jsonify({"status": "success", "wifi": bool(wifi_ssid)})
 
