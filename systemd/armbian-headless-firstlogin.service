@@ -1,0 +1,16 @@
+[Unit]
+Description=Armbian Headless First Login Provisioning
+After=network.target
+
+[Service]
+Type=oneshot
+Environment="TERM=linux"
+Environment="DEBIAN_FRONTEND=noninteractive"
+ExecStart=/bin/bash -c "if [ -x /usr/lib/armbian/armbian-firstlogin ]; then /usr/lib/armbian/armbian-firstlogin; fi"
+ExecStartPost=/bin/bash -c "rm -f /root/armbian-firstlogin.conf /root/.not_logged_in_yet; systemctl disable armbian-headless-firstlogin.service"
+StandardOutput=journal+console
+StandardError=journal+console
+RemainAfterExit=no
+
+[Install]
+WantedBy=multi-user.target

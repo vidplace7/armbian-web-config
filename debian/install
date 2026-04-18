@@ -1,2 +1,3 @@
 backend/* /usr/lib/armbian-web-config/
 systemd/armbian-web-config.service /lib/systemd/system/
+systemd/armbian-headless-firstlogin.service /lib/systemd/system/

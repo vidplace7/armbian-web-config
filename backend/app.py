@@ -151,7 +151,7 @@ def setup():
     os.system("systemctl disable armbian-web-config.service &")
     
     # Enable the native first login script to run on boot
-    os.system("systemctl enable armbian-firstlogin &")
+    os.system("systemctl enable armbian-headless-firstlogin.service &")
     
     # Schedule a reboot rather than running firstlogin directly to apply properly
     os.system("(sleep 3 && reboot) &")
